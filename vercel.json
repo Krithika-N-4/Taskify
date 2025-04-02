@@ -1,0 +1,7 @@
+{
+    "rewrites": [
+      { "source": "/", "destination": "/taskify.html" }
+    ],
+    "cleanUrls": true
+  }
+  
