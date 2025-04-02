@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskify - Organize Your Life</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1687ef;
+            --accent1: #ff5963;
+            --accent2: #39d2c0;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bg-light: #f5f7fa;
+            --bg-dark: #222831;
+            --card-light: #ffffff;
+            --card-dark: #393e46;
+            --transition: all 0.3s ease;
+        }
+
+        .light-mode {
+            --text: var(--text-dark);
+            --bg: var(--bg-light);
+            --card: var(--card-light);
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --text: var(--text-light);
+            --bg: var(--bg-dark);
+            --card: var(--card-dark);
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--card);
+            box-shadow: 0 2px 10px var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #0062b8 100%);
+            color: white;
+            padding: 120px 0 60px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-btn i {
+            margin-right: 10px;
+        }
+
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background-color: var(--card);
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            font-size: 16px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .counters {
+            background: linear-gradient(135deg, var(--primary) 0%, #0062b8 100%);
+            padding: 60px 0;
+            color: white;
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .counter-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .counter-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .counter-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .counter-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .screenshots {
+            padding: 80px 0;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .carousel-img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .carousel-btn:hover {
+            background: #0062b8;
+            transform: scale(1.1);
+        }
+
+        .prev {
+            margin-left: -20px;
+        }
+
+        .next {
+            margin-right: -20px;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, var(--primary) 0%, #0062b8 100%);
+            padding: 60px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .download-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .download-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .download-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        footer {
+            background-color: var(--card);
+            padding: 30px 0;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .carousel-controls {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .counter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .download-btn {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        .delay-5 {
+            animation-delay: 1s;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-check-circle" style="font-size: 28px; color: var(--primary);"></i>
+                    <h1>Taskify</h1>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2 class="animate-fadeInUp">Organize Your Life with Taskify</h2>
+            <p class="animate-fadeInUp delay-1">The ultimate task management app that helps you stay productive and focused. Never miss a deadline again!</p>
+            <a href="#" class="download-btn animate-fadeInUp delay-2 animate-pulse" id="heroDownloadBtn">
+                <i class="fas fa-download"></i> Download Taskify App
+            </a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card animate-fadeInUp">
+                    <div class="feature-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Task Management</h3>
+                    <p>Create, read, update, and delete tasks with ease. Stay organized with our intuitive interface.</p>
+                </div>
+                <div class="feature-card animate-fadeInUp delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Priority Levels</h3>
+                    <p>Mark tasks as important to focus on what matters most and get things done efficiently.</p>
+                </div>
+                <div class="feature-card animate-fadeInUp delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Due Date Feature</h3>
+                    <p>Set due dates for each task and never miss a deadline. Get reminders when tasks are approaching.</p>
+                </div>
+                <div class="feature-card animate-fadeInUp delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                    <h3>Task Status</h3>
+                    <p>Track progress with three statuses: Pending, In Progress, and Completed. Visualize your workflow.</p>
+                </div>
+                <div class="feature-card animate-fadeInUp delay-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>Dark/Light Mode</h3>
+                    <p>Switch between dark and light modes for comfortable usage during day and night.</p>
+                </div>
+                <div class="feature-card animate-fadeInUp delay-5">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <h3>Calendar Integration</h3>
+                    <p>Visualize a custom calendar view for better time management and planning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="counters">
+        <div class="container">
+            <div class="counter-grid">
+                <div class="counter-item animate-fadeInUp">
+                    <div class="counter-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="counter-number">All Tasks</div>
+                    <div class="counter-label">Track Everything</div>
+                </div>
+                <div class="counter-item animate-fadeInUp delay-1">
+                    <div class="counter-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="counter-number">Important</div>
+                    <div class="counter-label">Priority Tasks</div>
+                </div>
+                <div class="counter-item animate-fadeInUp delay-2">
+                    <div class="counter-icon">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="counter-number">In Progress</div>
+                    <div class="counter-label">Active Tasks</div>
+                </div>
+                <div class="counter-item animate-fadeInUp delay-3">
+                    <div class="counter-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="counter-number">Pending</div>
+                    <div class="counter-label">Upcoming Tasks</div>
+                </div>
+                <div class="counter-item animate-fadeInUp delay-4">
+                    <div class="counter-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="counter-number">Completed</div>
+                    <div class="counter-label">Finished Tasks</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="screenshots">
+        <div class="container">
+            <h2 class="section-title">App Screenshots</h2>
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <div class="carousel-item">
+                        <img src= "https://i.ibb.co/8g8YvybN/home-page-final.png" alt="Task Dashboard" class="carousel-img">
+                        <h3>Task Dashboard</h3>
+                        <p>View all your tasks at a glance with our intuitive dashboard.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src= "https://i.ibb.co/9CGdbcn/add-task.png" alt="Task Creation" class="carousel-img">
+                        <h3>Task Creation</h3>
+                        <p>Create new tasks with priority levels and due dates easily.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src= "https://i.ibb.co/Sk9C8G7/edit-task.png" alt="Task Categories" class="carousel-img">
+                        <h3>Task Categories</h3>
+                        <p>Organize tasks into different categories for better management.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src= "https://i.ibb.co/svMq7fxw/calender.png" alt="Calendar View" class="carousel-img">
+                        <h3>Calendar View</h3>
+                        <p>Visualize your tasks in a calendar for better time management.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src= "https://i.ibb.co/fGMWkzZ3/dark-mode-final.png" alt="Dark Mode" class="carousel-img">
+                        <h3>Dark Mode</h3>
+                        <p>Enjoy eye-friendly dark mode for comfortable usage at night.</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="carousel-nav" id="carouselNav"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="download-section">
+        <div class="container">
+            <div class="download-content">
+                <h2 class="animate-fadeInUp">Ready to Get Organized?</h2>
+                <p class="animate-fadeInUp delay-1">Download Taskify now and take control of your tasks, priorities, and deadlines. Available for both Android and iOS devices.</p>
+                <a href="#" class="download-btn animate-fadeInUp delay-2 animate-pulse" id="footerDownloadBtn">
+                    <i class="fas fa-download"></i> Download Taskify App
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p class="copyright">@Krithika N 2025| All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Download Button Functionality
+        const heroDownloadBtn = document.getElementById('heroDownloadBtn');
+        const footerDownloadBtn = document.getElementById('footerDownloadBtn');
+        
+        // Replace 'YOUR_APP_DOWNLOAD_LINK' with the actual download link
+        const downloadApp = (e) => {
+            e.preventDefault();
+            // For Android: Direct APK download link
+            const appDownloadLink = 'https://drive.google.com/file/d/1OIE_vWWNHOD2UZ96Y9zvTKlwU-UpLc7m/view?usp=drivesdk'; // Replace with actual app download link
+            
+            // Create an invisible anchor for download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = appDownloadLink;
+            downloadLink.download = 'Taskify.apk'; // For Android
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        };
+        
+        heroDownloadBtn.addEventListener('click', downloadApp);
+        footerDownloadBtn.addEventListener('click', downloadApp);
+
+        // Carousel Functionality
+        const carousel = document.getElementById('carousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carouselNav = document.getElementById('carouselNav');
+        
+        let currentIndex = 0;
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
+        
+        // Create carousel dots
+        for (let i = 0; i < totalItems; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('carousel-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                goToSlide(i);
+            });
+            carouselNav.appendChild(dot);
+        }
+        
+        // Update carousel position
+        const updateCarousel = () => {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            // Update active dot
+            document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        };
+        
+        // Go to specific slide
+        const goToSlide = (index) => {
+            currentIndex = index;
+            updateCarousel();
+        };
+        
+        // Next slide handler
+        const nextSlide = () => {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        };
+        
+        // Previous slide handler
+        const prevSlide = () => {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        };
+        
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        
+        // Auto slide every 10 seconds
+        setInterval(nextSlide, 10000);
+        
+        // Animation on scroll
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-fadeInUp');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementPosition < windowHeight - 50) {
+                    element.style.opacity = '1';
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        animateOnScroll(); // Initial check on page load
+    </script>
+</body>
+</html>
