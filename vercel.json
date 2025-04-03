@@ -1,6 +1,7 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/taskify.html" }
-    ],
-    "cleanUrls": true
+  "rewrites": [
+    { "source": "/", "destination": "/taskify.html" }
+  ],
+  "cleanUrls": true
 }
+
